@@ -4,13 +4,19 @@ open System
 open Fable.Core
 
 type PathObjectProps =
-    abstract dir : string with get, set
+    { dir: string
+    ; root: string
+    ; [<Emit("$0.base{{=$1}}")>] baseName: string
+    ; name: string
+    ; ext: string
+    }
+(*     abstract dir : string with get, set
     abstract root : string with get, set
     [<Emit("$0.base{{=$1}}")>] // using this because back ticks are way too ugly to read in code
     abstract baseName : string with get, set
     abstract name : string with get, set
     abstract ext : string with get, set
-
+ *)
 type IExports =
     /// Returns the last portion of 'path' argument. Similar to the "basename" command in UNIX.Trailing directory separators are ignored
     abstract basename : path:string -> string

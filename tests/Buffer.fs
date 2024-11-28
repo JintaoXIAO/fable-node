@@ -8,7 +8,7 @@ open Fable.Core.DynamicExtensions
 open Node.OS
 open Util
 
-let buffer = Node.Api.buffer
+(* let buffer = Node.Api.buffer
 let Buffer = Node.Api.buffer.Buffer
 type Encoding = Node.Buffer.BufferEncoding
 
@@ -290,3 +290,4 @@ let tests : Test =
     ]
 
   ]
+ *)

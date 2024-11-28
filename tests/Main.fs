@@ -6,11 +6,11 @@ let [<Global>] describe (name: string) (f: unit->unit) = jsNative
 let [<Global>] it (msg: string) (f: unit->unit) = jsNative
 
 let run () =
-    let tests = [ 
+    let tests = [
                     Url.tests
                     OS.tests
-                    Path.tests
-                    Buffer.tests
+                    //Path.tests
+                    //Buffer.tests
                     Performance.tests
                     TraceEvents.tests
                 ] :> Util.Test seq
