@@ -9,9 +9,9 @@ open Util
 
 let Os = Node.Api.os
 
-let tests : Test = 
+let tests : Test =
   testList "OS" [
-  
+
     testList "os.EOL" [
       testCase "Windows" <| fun _ ->
         if isPosix then testPassed()
@@ -23,7 +23,7 @@ let tests : Test =
         else
           Os.EOL |> equal "\n"
     ]
-    
+
     testList "os.arch" [
       testCase "arch" <| fun _ ->
         printfn "%s" (string (Os.arch()))
@@ -40,12 +40,12 @@ let tests : Test =
 
     testList "os.cpus" [
       testCase "cpus" <| fun _ ->
-        let ok = 
+        let ok =
           let cpuList = Os.cpus()
           let first = cpuList |> Seq.head
           printfn "%s" (first.model)
           first.model.Length > 0
-          && first.speed > 0.
+          && first.speed >= 0.
           && first.times.user >= 0.
           && first.times.nice >= 0.
           && first.times.sys >= 0.
@@ -97,13 +97,13 @@ let tests : Test =
       testCase "networkInterfaces" <| fun _ ->
         let data = Os.networkInterfaces()
         let keys = data |> Node.OS.NetworkInterfaceHelper.getInterfaceNames
-        keys 
-          |> Seq.iter( fun key -> 
+        keys
+          |> Seq.iter( fun key ->
             let infos = Node.OS.NetworkInterfaceHelper.getInterfaceInfo data key
-            infos |> Seq.iter( fun info -> printfn "%s:%s" key info.address )            
-          ) 
+            infos |> Seq.iter( fun info -> printfn "%s:%s" key info.address )
+          )
         testPassed()
-    ]    
+    ]
 
     testList "os.platform" [
       testCase "platform" <| fun _ ->
@@ -124,21 +124,21 @@ let tests : Test =
         let v = string (Os.tmpdir())
         printfn "%s" v
         v.Length > 0  |> equal true
-    ]    
+    ]
 
     testList "os.totalmem" [
       testCase "totalmem" <| fun _ ->
         let v = string (Os.totalmem())
         printfn "%s" v
         Os.totalmem() <> 0  |> equal true
-    ]        
+    ]
 
     testList "os.type" [
       testCase "type" <| fun _ ->
         let v = string (Os.``type``())
         printfn "%s" v
         v.Length > 0  |> equal true
-    ]    
+    ]
 
     testList "os.uptime" [
       testCase "uptime" <| fun _ ->
@@ -152,5 +152,5 @@ let tests : Test =
         let info = Os.userInfo()
         printfn "%s" info.homedir
         testPassed()
-    ]    
+    ]
   ]

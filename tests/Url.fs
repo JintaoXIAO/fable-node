@@ -11,9 +11,9 @@ let URL = Node.Api.URL
 
 let makeUrl input (b:string) :Node.Url.URL = URL.Create(input, b)
 
-let tests : Test = 
+let tests : Test =
   testList "Url" [
-  
+
     testList "new" [
       testCase "from string" <| fun _ ->
           let url = makeUrl "/foo" "https://example.org/"
@@ -29,7 +29,7 @@ let tests : Test =
       testCase "get" <| fun _ ->
           let url : Node.Url.URL = URL.Create("https://example.org/foo#bar")
           url.hash = "#bar" |> equal true
-      
+
       testCase "set" <| fun _ ->
           let url : Node.Url.URL = URL.Create("https://example.org/foo#bar")
           url.hash <- "baz"
@@ -40,7 +40,7 @@ let tests : Test =
       testCase "get" <| fun _ ->
           let url : Node.Url.URL = URL.Create("https://example.org:81/foo")
           url.host = "example.org:81" |> equal true
-      
+
       testCase "set" <| fun _ ->
           let url : Node.Url.URL = URL.Create("https://example.org:81/foo")
           url.host <- "example.com:82"
@@ -51,18 +51,18 @@ let tests : Test =
       testCase "get" <| fun _ ->
           let url : Node.Url.URL = URL.Create("https://example.org:81/foo")
           url.hostname = "example.org" |> equal true
-      
+
       testCase "set" <| fun _ ->
           let url : Node.Url.URL = URL.Create("https://example.org:81/foo")
           url.hostname <- "example.com:82"
-          url.href = "https://example.com:81/foo" |> equal true
+          equal "example.org" url.hostname
     ]
 
     testList "href" [
       testCase "get" <| fun _ ->
           let url : Node.Url.URL = URL.Create("https://example.org/foo")
           url.href = "https://example.org/foo" |> equal true
-      
+
       testCase "set" <| fun _ ->
           let url : Node.Url.URL = URL.Create("https://example.org/bar")
           url.href <- "https://example.org/foo"
@@ -73,7 +73,7 @@ let tests : Test =
       testCase "get" <| fun _ ->
           let url : Node.Url.URL = URL.Create("https://example.org/foo/bar?baz")
           url.origin = "https://example.org" |> equal true
-      
+
       testCase "unicode" <| fun _ ->
           let url : Node.Url.URL = URL.Create("https://測試")
           url.origin = "https://xn--g6w251d" |> equal true
@@ -86,7 +86,7 @@ let tests : Test =
 
       testCase "set" <| fun _ ->
           let url : Node.Url.URL = URL.Create("https://abc:xyz@example.com")
-          url.password <- "123" 
+          url.password <- "123"
           url.href = "https://abc:123@example.com/" |> equal true
     ]
 
@@ -97,7 +97,7 @@ let tests : Test =
 
       testCase "set" <| fun _ ->
           let url : Node.Url.URL = URL.Create("https://example.org/abc/xyz?123")
-          url.pathname <- "/abcdef" 
+          url.pathname <- "/abcdef"
           url.href = "https://example.org/abcdef?123" |> equal true
     ]
 
@@ -158,23 +158,23 @@ let tests : Test =
 
       testCase "set" <| fun _ ->
           let url : Node.Url.URL = URL.Create("https://abc:xyz@example.com")
-          url.username <- "123" 
+          url.username <- "123"
           url.href = "https://123:xyz@example.com/" |> equal true
     ]
 
     testList "static" [
       testCase "domainToUnicode" <| fun _ ->
           Node.Url.Static.domainToUnicode "xn--espaol-zwa.com" |> equal "español.com"
-      
+
       testCase "fileURLToPath" <| fun _ ->
-          if isPosix then 
+          if isPosix then
             Node.Url.Static.fileURLToPath "file:///你好.txt" |> equal "/你好.txt"
           else
             Node.Url.Static.fileURLToPath "file:///C:/path/" |> equal """C:\path\"""
 
       testCase "format" <| fun _ ->
           let url : Node.Url.URL = URL.Create("https://a:b@測試?abc#foo")
-          let formatOptions = jsOptions<Node.Url.IFormatOptions>( fun o -> 
+          let formatOptions = jsOptions<Node.Url.IFormatOptions>( fun o ->
             o.fragment <- Some false
             o.unicode <- Some true
             o.auth <- Some false
@@ -226,14 +226,14 @@ let tests : Test =
 
       testCase "entries" <| fun _ ->
           let url : Node.Url.URL = URL.Create("https://example.org/?foo=bar&foo=baz")
-          url.searchParams.entries() 
-            |> Seq.map( fun (k,v) -> k+v) 
-            |> String.concat "/" = "foobar/foobaz" 
+          url.searchParams.entries()
+            |> Seq.map( fun (k,v) -> k+v)
+            |> String.concat "/" = "foobar/foobaz"
             |> equal true
 
       testCase "sort" <| fun _ ->
           let url : Node.Url.URL = URL.Create("https://example.org/?query[]=abc&type=search&query[]=123")
-          url.searchParams.sort() 
+          url.searchParams.sort()
           url.searchParams.toString() = "query%5B%5D=abc&query%5B%5D=123&type=search" |> equal true
 
       testCase "append" <| fun _ ->
@@ -251,7 +251,7 @@ let tests : Test =
           let url : Node.Url.URL = URL.Create("https://example.org/?a=b")
           let newSearchParams  : Node.Url.URLSearchParams = Node.Api.URLSearchParams.Create(url.searchParams)
           newSearchParams.append("a","c")
-          (url.href = "https://example.org/?a=b" 
+          (url.href = "https://example.org/?a=b"
             && newSearchParams.toString() = "a=b&a=c") |> equal true
 
     ]

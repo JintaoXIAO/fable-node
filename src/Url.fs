@@ -11,23 +11,23 @@ type LegacyFormatOptions =
     abstract member hostname : string with get, set
     abstract member pathname : string with get, set
     abstract member query : obj with get, set
-    
-type IFormatOptions = 
+
+type IFormatOptions =
     abstract auth:bool option with get, set
     abstract fragment:bool option with get, set
     abstract search:bool option with get, set
     abstract unicode:bool option with get, set
 
-type [<AllowNullLiteral>] URLSearchParams = 
-    [<Emit("new $0($1...)")>] 
+type [<AllowNullLiteral>] URLSearchParams =
+    [<Emit("new $0($1...)")>]
     abstract Create: input:string -> URLSearchParams
-    [<Emit("new $0($1...)")>] 
+    [<Emit("new $0($1...)")>]
     abstract Create: input:unit -> URLSearchParams
-    [<Emit("new $0($1...)")>] 
+    [<Emit("new $0($1...)")>]
     abstract Create: input:URLSearchParams -> URLSearchParams
-    [<Emit("new $0($1...)")>] 
+    [<Emit("new $0($1...)")>]
     abstract Create: input:obj -> URLSearchParams
-    [<Emit("new $0($1...)")>] 
+    [<Emit("new $0($1...)")>]
     abstract Create: input:'T seq -> URLSearchParams
     abstract append: string * string -> unit
     abstract delete: string -> unit
@@ -37,26 +37,26 @@ type [<AllowNullLiteral>] URLSearchParams =
     abstract keys: unit -> string []
     abstract set: name:string * value:string -> unit
     abstract sort: unit -> unit
-    abstract toString: unit -> string 
-    abstract values: unit -> string [] 
+    abstract toString: unit -> string
+    abstract values: unit -> string []
     abstract entries: unit -> (string*string) []
 
 type [<AllowNullLiteral>] URLType =
-    [<Emit("new URL($1...)")>] 
+    [<Emit("new URL($1...)")>]
     abstract Create: input:string * b: URL -> URL
-    [<Emit("new URL($1...)")>] 
+    [<Emit("new URL($1...)")>]
     abstract Create: input:string * b: string -> URL
     [<Emit("new URL($1...)")>]
     abstract Create: input:string -> URL
-    abstract format: URL * options : IFormatOptions -> string 
-    abstract format: options : LegacyFormatOptions -> string 
+    abstract format: URL * options : IFormatOptions -> string
+    abstract format: options : LegacyFormatOptions -> string
 
 type [<AllowNullLiteral>] URL =
     abstract hash: string  with get, set
     abstract host: string  with get, set
     abstract hostname: string  with get, set
     abstract href: string  with get, set
-    abstract origin: string  
+    abstract origin: string
     abstract password: string  with get, set
     abstract pathname: string  with get, set
     abstract port: string  with get, set
@@ -64,12 +64,12 @@ type [<AllowNullLiteral>] URL =
     abstract search: string with get, set
     abstract searchParams: URLSearchParams
     abstract username: string with get, set
-    abstract toString: unit -> string 
-    abstract toJSON: unit -> string 
+    abstract toString: unit -> string
+    abstract toJSON: unit -> string
 
-module Static = 
+module Static =
     let domainToASCII: string -> string = importMember  "url"
     let domainToUnicode: string -> string = importMember  "url"
     let fileURLToPath: string -> string = importMember  "url"
-    let fileURLToPathFromURL: URL -> string = importMember  "url"
+    //let fileURLToPathFromURL: URL -> string = importMember  "url"
     let pathToFileURL: string -> URL = importMember  "url"

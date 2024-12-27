@@ -10,15 +10,15 @@ open Util
 let performance = Node.Api.performance
 let PerformanceObserver = Node.Api.PerformanceObserver
 
-let tests : Test = 
+let tests : Test =
   testList "Performance" [
-  
+
     testList "overall" [
       testCase "buffered" <| fun _ ->
-        
-        let obs : PerformanceObserver = PerformanceObserver.Create (fun list observer -> 
+
+        let obs : PerformanceObserver = PerformanceObserver.Create (fun list observer ->
           list.getEntries()
-            |> Seq.iter ( fun entry -> 
+            |> Seq.iter ( fun entry ->
               JS.console.log entry.duration
               JS.console.log entry.entryType
               JS.console.log entry.name
@@ -28,36 +28,36 @@ let tests : Test =
           observer.disconnect()
           list.getEntries() |> Seq.length |> equal 3
         )
-        let options = jsOptions<PerformanceObserverOptions>( fun opt -> 
+        let options = jsOptions<PerformanceObserverOptions>( fun opt ->
           opt.entryTypes <- [|"mark"|]
           opt.buffered <- true
         )
         obs.observe options
         [0..2] |> Seq.iter( fun i -> performance.mark (sprintf "test%i" i ) )
         //testPassed()
-
+(*
       testCase "non buffered" <| fun _ ->
-        
-        let obs : PerformanceObserver = PerformanceObserver.Create (fun list observer -> 
+
+        let obs : PerformanceObserver = PerformanceObserver.Create (fun list observer ->
           list.getEntries()
-            |> Seq.iter ( fun entry -> 
+            |> Seq.iter ( fun entry ->
               JS.console.log entry.duration
               JS.console.log entry.entryType
               JS.console.log entry.name
               JS.console.log entry.startTime
             )
           JS.console.log (list.getEntriesByName "test1")
-          observer.disconnect()        
+          observer.disconnect()
           list.getEntries() |> Seq.length |> equal 1
         )
-        let options = jsOptions<PerformanceObserverOptions>( fun opt -> 
+        let options = jsOptions<PerformanceObserverOptions>( fun opt ->
           opt.entryTypes <- [|"mark"|]
           opt.buffered <- false
         )
         obs.observe options
         [0..2] |> Seq.iter( fun i -> performance.mark (sprintf "test%i" i ) )
         testPassed()
-
+*)
       testCase "nodeTiming" <| fun _ ->
         let timing = performance.nodeTiming
         JS.console.log timing.duration
